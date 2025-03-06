@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pioneer Club - Câu lạc bộ sinh viên nghiên cứu khoa học</title>
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" sizes="180x180" href="favicon.ico">
+        <style>
+            /*Giao diện*/
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                text-align: center;
+                
+                /* Thêm background hình ảnh */
+                background-image: url('nen.jpg'); /* Thay 'background.jpg' bằng đường dẫn của ảnh */
+                background-size: cover; /* Đảm bảo ảnh phủ toàn bộ màn hình */
+                background-position: center; /* Căn giữa ảnh */
+                background-attachment: fixed; /* Giữ ảnh cố định khi cuộn trang */
+            }
+
+            /*Tiêu đè*/
+            header {
+                background-color: #2f55a4;
+                color: white;
+                padding: 20px 0;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 32px;
+            }
+
+            header p {
+                margin: 5px 0;
+                font-size: 18px;
+            }
+            /* Club in4 */
+            .club-info,
+            .contract-info {
+                background-color: #5632a8; /* Đổi từ trắng sang tím đậm */
+                color: white; /* Đổi chữ thành màu trắng để dễ đọc */
+                margin: 20px auto;
+                padding: 20px;
+                width: 80%;
+                max-width: 800px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Đổi màu tiêu đề để nổi bật hơn */
+            .club-info h1, 
+            .contract-info h2 {
+                color: #ffd700; /* Vàng để tạo sự nổi bật */
+            }
+
+            /* Đổi màu chữ nội dung */
+            .club-info p,
+            .contract-info p {
+                color: #f1f1f1; /* Trắng xám để dễ nhìn */
+            }
+
+            /* Video */
+            /* Giới hạn kích thước video */
+            .contract-info video {
+                width: 60%;  /* Điều chỉnh kích thước video (có thể thay đổi theo ý muốn) */
+                max-width: 600px; /* Đảm bảo video không quá lớn */
+                height: auto; /* Giữ tỷ lệ khung hình */
+                border-radius: 10px; /* Bo tròn góc */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng đổ */
+                margin-bottom: 15px; /* Tạo khoảng cách với chữ */
+            }
+
+
+            /* Căn giữa tiêu đề */
+            .contract-info h2, 
+            .contract-info p {
+                margin: 5px 0;
+            }
+
+
+             /* ================== GIAO DIỆN SIGN IN / SIGN UP ================== */
+
+            .modal-auth {
+                display: none;
+                position: fixed;
+                z-index: 10;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.4);
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modal-content-auth {
+                background-color: white;
+                padding: 20px;
+                width: 50%;
+                max-width: 400px;
+                border-radius: 10px;
+                text-align: center;
+            }
+
+            /* Nút đóng */
+            .close-auth {
+                float: right;
+                font-size: 24px;
+                color: red;
+                cursor: pointer;
+            }
+
+            /* Input */
+            .auth-input {
+                width: 90%;
+                padding: 10px;
+                margin: 5px 0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            /* Nút */
+            .auth-button {
+                background-color: #2f55a4;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                margin-top: 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .auth-button:hover {
+                background-color: #1e3c7d;
+            }
+
+            /* Thông báo */
+            .auth-message {
+                font-size: 16px;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+
+            .success {
+                color: green;
+            }
+
+            .error {
+                color: red;
+            }
+             .auth-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 80vh;
+            }
+
+            .auth-box {
+                display: flex;
+                width: 800px;
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+            }
+
+            /* Phần ảnh bên trái */
+            .auth-left {
+                flex: 1;
+                background: url('pioneer.jpg') no-repeat center center;
+                background-size: cover;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            /* Phần form bên phải */
+            .auth-right {
+                flex: 1;
+                padding: 40px;
+                text-align: left;
+            }
+
+            .auth-right h2 {
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            /* Form */
+            .auth-form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .auth-form input {
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+
+            .auth-form button {
+                background-color: #2f55a4;
+                color: white;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: 0.3s;
+            }
+
+            .auth-form button:hover {
+                background-color: #1e3c7d;
+            }
+
+            /* Điều hướng giữa Sign In và Sign Up */
+            .switch-auth {
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            .switch-auth a {
+                color: #2f55a4;
+                text-decoration: none;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .switch-auth a:hover {
+                text-decoration: underline;
+            }
+
+            /* Ẩn form Sign Up mặc định */
+            #signUpForm {
+                display: none;
+            }
+
+
+            /*Cre*/
+            footer {
+                background-color: #ddd;
+                padding: 10px 0;
+                margin-top: 20px
+            }
+            /*Link tìm hiểu thêm*/
+            /* Ẩn nội dung mặc định */
+            .hidden {
+                display: none;
+            }
+
+            /* Căn giữa nội dung */
+            .contract-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* Định dạng link "Tìm hiểu thêm" */
+            .learn-more-link {
+                display: inline-block;
+                margin-top: 10px;
+                font-size: 18px;
+                font-weight: bold;
+                color: #ffd700;
+                text-decoration: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                background-color: #2f55a4;
+                transition: 0.3s;
+                cursor: pointer;
+            }
+
+            .learn-more-link:hover {
+                background-color: #1e3c7d;
+                color: white;
+            }
+            /* Hộp thoại hiển thị nội dung */
+            /* ================== HỘP THOẠI GIỚI THIỆU 5 BAN ================== */
+            #infoContent {
+                display: none;
+                background: rgba(255, 255, 255, 0.95); /* Nền trắng mờ */
+                color: black; /* Chữ đen */
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                text-align: center; /* Căn giữa tiêu đề */
+            }
+
+            /* Căn giữa tiêu đề */
+            #infoContent h2 {
+                color: #2f55a4; /* Màu xanh đậm */
+                text-align: center;
+            }
+
+            /* Danh sách các ban nằm bên trái */
+            #infoContent ul {
+                padding: 0;
+                text-align: left;
+                width: fit-content;
+                margin: 0 auto; /* Căn giữa danh sách */
+                list-style: none;
+            }
+
+            /* Từng mục ban */
+            #infoContent ul li {
+                color: black;
+                margin: 10px 0;
+            }
+
+            /* Nút của từng ban */
+            #infoContent ul li button {
+                background-color: #2f55a4;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                width: 200px;
+                text-align: left;
+                transition: 0.3s;
+            }
+
+            #infoContent ul li button:hover {
+                background-color: #1e3c7d;
+            }
+
+            /* ================== HỘP THOẠI CHI TIẾT TỪNG BAN ================== */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 10;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.4);
+                justify-content: center;
+                align-items: center;
+            }
+
+           /* Nội dung hộp thoại */
+            .modal-content {
+                background-color: white;
+                color: black; /* Chữ đen */
+                padding: 20px;
+                width: 60%;
+                max-width: 600px;
+                border-radius: 10px;
+                text-align: left; /* Căn lề trái để dễ đọc */
+                line-height: 1.6; /* Tăng khoảng cách dòng */
+            }
+
+            /* Tiêu đề hộp thoại */
+            #modal-title {
+                text-align: center;
+                color: #ff2e00; /* Đổi tiêu đề thành đen luôn */
+            }
+
+            /* Nội dung hộp thoại */
+            #modal-body {
+                font-size: 16px;
+                color: #000; /* Đảm bảo chữ trong nội dung là đen */
+                white-space: pre-line; /* Hỗ trợ xuống dòng */
+            }
+
+
+
+
+            /* Nút đóng hộp thoại */
+            .close {
+                color: red;
+                font-size: 24px;
+                float: right;
+                cursor: pointer;
+            }
+
+            /* Đổi màu chữ của link */
+            #infoContent a {
+                color: #ff5733; /* Màu cam đỏ */
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            #infoContent a:hover {
+                color: #ff2e00; /* Màu đỏ đậm khi hover */
+            }
+
+            /* Nút liên hệ */
+            .contact-button {
+                display: inline-block;
+                background-color: #ff5733; /* Màu cam */
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-weight: bold;
+                cursor: pointer;
+                transition: 0.3s;
+                margin-top: 15px;
+            }
+
+            .contact-button:hover {
+                background-color: #c9302c; /* Màu đỏ đậm khi hover */
+            }
+           
+
+
+
+
+        </style>
+    </head>
+    <body>
+        <header>    
+            <h1>Pioneer Club</h1>
+            <p>Câu lạc bộ sinh viên nghiên cứu khoa học</p>
+        </header>
+
+        <div class="club-info">
+            <h1>Pioneer Club</h1>
+            <p>Pioneer Club là một Câu lạc bộ về nghiên cứu và học thuật trực thuộc khoa Điện tử-Viễn thông.</p>
+        </div>
+
+        <div class="contract-info">
+            <video controls width="640" height="360">
+                <source src="https://res.cloudinary.com/dvbeqaofc/video/upload/v1741184566/Gi%E1%BB%9Bi_thi%E1%BB%87u_CLB_SV_NCKH_Pioneer_update_11-2022_vpcbwp.mp4">
+            </video>
+            
+
+
+            <!-- Nút Tìm hiểu thêm -->
+            <a href="#" class="learn-more-link" onclick="toggleInfo()">Tìm hiểu thêm</a>
+            
+            <!-- Nội dung thông tin ẩn ban đầu -->
+            <div id="infoContent">
+                <h2>Giới thiệu 5 ban</h2>
+                
+                <!-- Danh sách các ban (nằm bên trái) -->
+                <ul class="ban-list">
+                    <li><button onclick="openModal('ai')">Ban AI</button></li>
+                    <li><button onclick="openModal('iot')">Ban IOT</button></li>
+                    <li><button onclick="openModal('dt')">Ban Điện tử</button></li>
+                    <li><button onclick="openModal('web')">Ban Web/App Thuật toán</button></li>
+                    <li><button onclick="openModal('truyen-thong')">Ban Truyền thông</button></li>
+                </ul>
+            </div>
+            
+            <!-- Hộp thoại hiển thị nội dung từng ban -->
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h2 id="modal-title">Tiêu đề</h2>
+                    <p id="modal-body">Nội dung của ban...</p>
+                </div>
+            </div>
+            
+                <!-- Nút Liên hệ -->
+                <a href="https://www.facebook.com/CLBSVNCKHPioneerKhoaDTVT" target="_blank" class="contact-button">
+                    Liên hệ chúng tôi qua fanpage
+                </a>           
+            </div>
+
+
+        </div>
+
+        
+        <div class="auth-container">
+            <div class="auth-box">
+                <div class="auth-left">
+                </div>
+
+                <div class="auth-right">
+                    <!-- Form Sign In -->
+                    <div id="signInForm">
+                        <h2>Log In</h2>
+                        <form class="auth-form">
+                            <input type="email" placeholder="Email address" required>
+                            <input type="password" placeholder="Password" required>
+                            <button type="submit">Sign In</button>
+                        </form>
+                        <div class="switch-auth">
+                            Don't have an account? <a onclick="toggleAuth('signUp')">Sign Up</a>
+                        </div>
+                    </div>
+
+                    <!-- Form Sign Up -->
+                    <div id="signUpForm">
+                        <h2>Sign Up</h2>
+                        <form class="auth-form">
+                            <input type="text" placeholder="Your Full Name" required>
+                            <input type="email" placeholder="Email" required>
+                            <input type="text" placeholder="Address" required>
+                            <input type="text" placeholder="Phone" required>
+                            <input type="password" placeholder="Password" required>
+                            <input type="password" placeholder="Confirm your password" required>
+                            <button type="submit">Sign Up</button>
+                        </form>
+                        <div class="switch-auth">
+                            Already have an account? <a onclick="toggleAuth('signIn')">Log In</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Pioneer Club. All rights reserved.</p>
+        </footer> 
+
+
+        <script>
+            // JavaScript để ẩn/hiện nội dung khi bấm vào "Tìm hiểu thêm"
+            function toggleInfo() {
+                var info = document.getElementById("infoContent");
+                if (info.style.display === "none" || info.style.display === "") {
+                    info.style.display = "block"; // Hiển thị nội dung
+                } else {
+                    info.style.display = "none"; // Ẩn nội dung
+                }
+            }
+
+
+
+            // Nội dung của từng ban
+            const banData = {
+                ai: {
+                    title: "Ban AI",
+                    content: `
+                        Ban AI là nơi kết nối các thành viên có đam mê và tinh thần ham học hỏi đối với mảng Trí tuệ nhân tạo.
+
+                        🍀 Ban AI chính là một sân chơi để các bạn khẳng định chính mình, một môi trường chuyên nghiệp để học hỏi, phát triển kỹ năng từ kỹ năng mềm đến kỹ năng học thuật chuyên môn, giúp bạn vững tin trên con đường mình đã chọn.
+
+                        👉 Hoạt động:
+                        ✅ Training Python
+                        ✅ Training AI
+                        ✅ Seminar AI/Machine Learning/Deep Learning
+                        ✅ Tham gia các cuộc thi Nghiên cứu khoa học với các đề tài thuộc lĩnh vực AI
+                        ✅ Tham gia nghiên cứu các sản phẩm cùng với CLB
+                        ✅ Tham gia tìm hiểu và trình bày kiến thức AI
+
+                        🤭 Tham gia ban AI, bạn sẽ cùng nhau học hỏi kiến thức mới từ bạn bè, anh chị và thầy cô. Bên cạnh đó, bạn có cơ hội tham gia vào các dự án thực tế cùng các anh chị và thầy cô trong CLB. Đây chắc chắn là một lợi thế cực kỳ lớn cho bạn sau này!
+                    `
+                },
+                iot: {
+                    title: "Ban IOT",
+                    content: `Cuộc sống con người luôn thay đổi và công nghệ thì không ngừng phát triển. Có bao giờ bạn tưởng tượng cuộc sống của chúng ta giống như những thước phim viễn tưởng, nơi mà con người có thể điều khiển vạn vật trong lòng bàn tay, trong suy nghĩ hay trên một màn hình ảo chưa? Nếu bạn cảm thấy điều đó là viển vông và chỉ có thể thấy trên phim thì bạn đã sai, vì thế giới đang dần tiến đến với những điều tưởng chừng như không tưởng ấy nhờ IoT – Internet of Things.
+                    
+                    🍀 Ban IoT sẽ cho các bạn một môi trường lý tưởng nhằm bồi dưỡng cho mình các kỹ năng chuyên ngành và thỏa sức vui chơi nhưng không kém phần bổ ích giúp cho các bạn “định vị” được bản thân để phục vụ cho những môn học ở trường và công việc sau này.                 🤭 Đến với Ban IoT, bạn sẽ được trau dồi thêm kiến thức về:
+                    ✅ Lập trình C/C++ 
+                    ✅ Cách quản lý và tối ưu bộ nhớ khi lập trình vi điều khiển
+                    ✅ Kỹ năng debug chương trình 
+                    ✅ Kiến thức hệ điều hành Linux
+
+                    👉 Hoạt động:
+                    ✅ Training ngôn ngữ C cho Hệ thống nhúng và IoTs
+                    ✅ Training Arduino
+                    ✅ Lập trình và thiết kế xe tự hành
+                    ✅ Seminar Hệ thống Nhúng/ IoT
+
+                    🤭 Nếu bạn là một người đam mê và muốn tạo ra các thiết bị thông minh để giải quyết các vấn đề xã hội, thì đừng ngần ngại mà hãy gia nhập vào Ban Lập trình nhúng/ IoT.
+`
+                },
+                dt:{
+                    title: "Ban Điện tử",
+                    content: `Ban Điện Tử là nơi tập hợp các sinh viên năng động, đam mê, nhiệt huyết và đặc biệt yêu thích Ngành Điện tử. Nếu bạn dám nghĩ, dám làm, dám cháy hết mình với đam mê của bản thân hãy đến với Ban Điện tử chúng tôi - nơi sẽ giúp các bạn không để cho thanh xuân trôi qua một cách lãng phí..!
+ 
+                    Tham gia ban Điện tử, bạn sẽ được trau dồi kiến thức về: 
+                    ✅Các linh kiện điện tử
+                    ✅ Kiến thức về vi mạch, các loại mạch
+                    ✅ Thiết kế PCB
+                    ✅ Kỹ năng làm việc nhóm, rèn luyện khả năng lập kế hoạch, tư duy sáng tạo
+                    👉 Ngoài việc phục vụ những môn học ở trường PBL, đồ án,... Các bạn còn có thể tự làm xe điều khiển, ampli, mạch xung,... 
+                    👉 Bên cạnh đó bạn còn có cơ hội tiếp xúc với các anh chị, thầy cô là những người có kinh nghiệm trong ngành, bạn bè các khoa, các khoá để cùng giúp đỡ nhau trong quá trình học tập
+                    
+                    🔥 Hoạt động:
+                    ✅ Train Altium, làm mạch
+                    ✅ Train Cmos
+                    ✅ Seminar Điện tử
+                    
+                    🤭 Nếu bạn là một người đam mê về điện tử, muốn học hỏi, thể hiện khả năng của mình thì đừng ngần ngại mà hãy gia nhập vào ban Điện tử của CLB Pioneer ngay đi nhé.
+`
+                },
+                web: {
+                    title: "Ban Web/App Thuật toán",
+                    content: `👑 Bạn có nhiệt huyết tuổi trẻ, đam mê công nghệ và tình yêu với các ngôn ngữ lập trình. Bạn mong muốn khám phá những con số hay đơn giản là muốn gửi gắm chút sức trẻ của mình cho CLB. Vậy thì Đây sẽ là nơi dành cho bạn!
+ 
+                    🥰 Ban Web/App Thuật toán của clb PIONEER là nơi quy tụ những nhân vật vừa có tâm vừa có tầm hứa hẹn mang đến cho bạn rất rất nhiều trải nghiệm và kiến thức bổ ích.
+
+                    👉 Hoạt động:
+                    ✅ Học thiết kế Web/App qua các dự án thực tế  ➛ qua đó có cho mình những dự án để thêm vào CV.
+                    ✅ Tổ chức các cuộc thi liên quan đến lập trình thi đấu: ETE CODE CONTEST, Code interview.
+                    ✅ Thành lập các team tham gia các cuộc thi lập trình:  ICPC,…
+                    ✅ Tổ chức các buổi training về Web, App, Thuật toán.
+
+                    “Nếu bạn muốn thử thách bản thân, PIONEER sẽ giúp bạn phá vỡ những giới hạn”.
+`
+                },
+                "truyen-thong": {
+                    title: "Ban Truyền thông",
+                    content: `📸 Ban Truyền Thông - Hình ảnh là nơi kết nối, môi trường lý tưởng, chuyên nghiệp dành cho những bạn trẻ đam mê sáng tạo, luôn sẵn sàng bùng nổ những ý tưởng, đầy nhiệt huyết và yêu thích truyền thông.
+ 
+                    🤔 Công việc của một thành viên ban truyền thông ?
+                    Nhiệm vụ chính của ban Truyền thông là thiết kế các bài viết, ấn phẩm truyền thông, xây dựng các chuyên mục chia sẻ về những sự kiện của clb được đăng trên fanpage
+                    
+                    🌟 Về cơ bản, công việc trong ban truyền thông chia làm 3 mảng lớn: Thiết kế, Biên tập, Photo
+                    📌 Mảng thiết kế : Thiết kế các ấn phẩm truyền thông, chỉnh sửa ảnh, dựng video…
+                    📌 Mảng Biên tập: Viết bài đăng, sáng tạo content, kịch bản,..
+                    📌 Mảng Photo : Quay phim, chụp ảnh, thu âm các sự kiện để làm tài nguyên thiết kế và biên tập
+`
+                }
+            };
+
+            // Mở hộp thoại và hiển thị nội dung tương ứng
+            function openModal(ban) {
+                document.getElementById("modal-title").innerText = banData[ban].title;
+                document.getElementById("modal-body").innerText = banData[ban].content;
+                document.getElementById("modal").style.display = "flex";
+            }
+
+            // Đóng hộp thoại
+            function closeModal() {
+                document.getElementById("modal").style.display = "none";
+            }
+            function toggleAuth(type) {
+                if (type === "signUp") {
+                    document.getElementById("signInForm").style.display = "none";
+                    document.getElementById("signUpForm").style.display = "block";
+                    document.getElementById("authText").innerHTML = "New here? <br> Sign up and discover great opportunities!";
+                } else {
+                    document.getElementById("signUpForm").style.display = "none";
+                    document.getElementById("signInForm").style.display = "block";
+                    document.getElementById("authText").innerHTML = "One of us? <br> If you already have an account, just sign in. We've missed you!";
+                }
+            }
+            
+            // Biến lưu thông tin đăng ký (giả lập database)
+                let registeredUsers = {};
+
+                // Kiểm tra định dạng email hợp lệ
+                function isValidEmail(email) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailRegex.test(email);
+                }
+
+                // Hiển thị thông báo (xóa thông báo cũ nếu có)
+                function showMessage(formId, message, color) {
+                    let form = document.getElementById(formId);
+                    let messageBox = form.querySelector(".auth-message");
+
+                    // Nếu chưa có phần tử thông báo, tạo mới
+                    if (!messageBox) {
+                        messageBox = document.createElement("p");
+                        messageBox.className = "auth-message";
+                        messageBox.style.textAlign = "center";
+                        form.appendChild(messageBox);
+                    }
+
+                    // Cập nhật nội dung và màu sắc của thông báo
+                    messageBox.style.color = color;
+                    messageBox.innerText = message;
+                }
+
+                // Xử lý đăng ký
+                function handleSignUp(event) {
+                    event.preventDefault(); // Ngăn reload trang
+
+                    let email = document.querySelector("#signUpForm input[type='email']").value;
+                    let password = document.querySelector("#signUpForm input[type='password']").value;
+                    let confirmPassword = document.querySelector("#signUpForm input:nth-of-type(6)").value;
+
+                    // Kiểm tra email hợp lệ
+                    if (!isValidEmail(email)) {
+                        showMessage("signUpForm", "Email không hợp lệ!", "red");
+                        return;
+                    }
+
+                    // Kiểm tra mật khẩu có khớp không
+                    if (password !== confirmPassword) {
+                        showMessage("signUpForm", "Mật khẩu xác nhận không khớp!", "red");
+                        return;
+                    }
+
+                    // Lưu thông tin đăng ký
+                    registeredUsers[email] = password;
+
+                    // Hiển thị thông báo đăng ký thành công
+                    showMessage("signUpForm", "Đăng ký thành công!", "green");
+
+                    // Chuyển sang form đăng nhập sau 1 giây
+                    setTimeout(() => {
+                        toggleAuth('signIn');
+                        // Xóa thông báo khi chuyển form
+                        document.querySelector("#signUpForm .auth-message").innerText = "";
+                    }, 1000);
+                }
+
+                // Xử lý đăng nhập
+                function handleSignIn(event) {
+                    event.preventDefault(); // Ngăn reload trang
+
+                    let email = document.querySelector("#signInForm input[type='email']").value;
+                    let password = document.querySelector("#signInForm input[type='password']").value;
+
+                    // Kiểm tra email hợp lệ
+                    if (!isValidEmail(email)) {
+                        showMessage("signInForm", "Email không hợp lệ!", "red");
+                        return;
+                    }
+
+                    // Kiểm tra thông tin đăng nhập
+                    if (registeredUsers[email] && registeredUsers[email] === password) {
+                        showMessage("signInForm", "Đăng nhập thành công!", "green");
+
+                        setTimeout(() => {
+                            document.querySelector(".auth-container").style.display = "none";
+                        }, 1000);
+                    } else {
+                        showMessage("signInForm", "Email hoặc mật khẩu sai!", "red");
+                    }
+                }
+
+                // Gắn sự kiện submit cho form
+                document.querySelector("#signUpForm form").addEventListener("submit", handleSignUp);
+                document.querySelector("#signInForm form").addEventListener("submit", handleSignIn);
+
+        </script>
+    </body>
+</html>
